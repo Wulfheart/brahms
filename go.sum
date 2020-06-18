@@ -1,0 +1,7 @@
+github.com/Wulfheart/go-color-mix v0.0.0-20200618153902-58666d5b1de5 h1:+Xl5BqhlYJxT6CdyKFKij+Gus/pl/YzEtiEd5n+J45k=
+github.com/Wulfheart/go-color-mix v0.0.0-20200618153902-58666d5b1de5/go.mod h1:FPjCFK1gI482+o3PJEm8Rtx6cvYdzeqo0cHmhBAPhh8=
+github.com/go-audio/midi v1.0.0 h1:50zbE5RwJxfwYdOYMqIhdhcTnfqmGPuKm5j5g6ethik=
+github.com/go-audio/midi v1.0.0/go.mod h1:PoFcd6KPFUn++NHd1libpb/WifNIb/qKVvZ71McMVmo=
+github.com/lucasb-eyer/go-colorful v1.0.3 h1:QIbQXiugsb+q10B+MI+7DI1oQLdmnep86tWFlaaUAac=
+github.com/lucasb-eyer/go-colorful v1.0.3/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i7ruzyGqttikkLy0=
+github.com/mattetti/filebuffer v1.0.0/go.mod h1:X6nyAIge2JGVmuJt2MFCqmHrb/5IHiphfHtot0s5cnI=
