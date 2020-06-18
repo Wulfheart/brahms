@@ -33,6 +33,7 @@ func Read(path string){
         log.Fatal(err)
     }
 
+	fmt.Println(string(content[0]), string(content[4]))
     // Convert []byte to string and print to screen
     csvfile := string(content)
 	r := csv.NewReader(strings.NewReader(csvfile))
@@ -52,7 +53,7 @@ func Read(path string){
 			fmt.Println(i)
 		}
 		for j, m := range l{
-			l[j] = strings.ReplaceAll(m, "\x00", "")
+			l[j] = strings.ReplaceAll(m, "\r", "")
 		}
 		part, exists := Score[l[7]]
 		if ! exists {
@@ -74,7 +75,6 @@ func Read(path string){
 		}
 		// fmt.Println(n)
 		part.Plays = append(part.Plays, &n)
-		fmt.Println(l[7])
 		Score[l[7]] = part
 
 
