@@ -9,23 +9,11 @@ import (
 	"strings"
 )
 
-type Score map[string]*Part
 
-type Part struct {
-	Name string
-	Plays []*Note
-}
 
-type Note struct {
-	Part *Part
-	StartTicks float64
-	StartSecs float64
-	DurTicks float64
-	DurSecs float64
-	Pitch float64
-	FullNoteOctave string
-	Velocity float64
-}
+
+
+
 
 func Read(path string) Score{
 
@@ -78,7 +66,6 @@ func Read(path string) Score{
 			FullNoteOctave: l[5],
 			Velocity:       parseToFloat(l[6]),
 		}
-		// fmt.Println(n)
 		part.Plays = append(part.Plays, &n)
 		Sc[partNum] = part
 

@@ -14,4 +14,8 @@ func main() {
 	sc := score.Read(p)
 	val := *sc["1"].Plays[0]
 	fmt.Println("Value:", val)
+	for _, v := range sc {
+		v.Sort()
+	}
+	fmt.Println("Sorting done")
 }
