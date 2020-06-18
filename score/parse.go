@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-var Score = make(map[string]*Part)
+type Score map[string]*Part
 
 type Part struct {
 	Name string
@@ -27,21 +27,24 @@ type Note struct {
 	Velocity float64
 }
 
-func Read(path string){
-	  content, err := ioutil.ReadFile(path)
+func Read(path string) Score{
+
+	content, err := ioutil.ReadFile(path)
     if err != nil {
         log.Fatal(err)
     }
-
-	fmt.Println(string(content[0]), string(content[4]))
     // Convert []byte to string and print to screen
     csvfile := string(content)
+
+    // This is some weird behaviour probably caused by one of the previous tools. Let's remove this, so it doesn't get weird and easily testable.
+    csvfile = strings.ReplaceAll(csvfile, "\x00", "")
 	r := csv.NewReader(strings.NewReader(csvfile))
 	r.FieldsPerRecord = -1
 	out, err := r.ReadAll()
 	if err != nil {
 		panic(err)
 	}
+	Sc := make(Score)
 	for i, l := range out {
 		if i == 0 {
 			continue
@@ -55,7 +58,9 @@ func Read(path string){
 		for j, m := range l{
 			l[j] = strings.ReplaceAll(m, "\r", "")
 		}
-		part, exists := Score[l[7]]
+		partNum := l[7]
+
+		part, exists := Sc[partNum]
 		if ! exists {
 			part = &Part{
 				Name:  l[7],
@@ -75,10 +80,11 @@ func Read(path string){
 		}
 		// fmt.Println(n)
 		part.Plays = append(part.Plays, &n)
-		Score[l[7]] = part
+		Sc[partNum] = part
 
 
 	}
+	return Sc
 }
 
 func parseToFloat(s string) float64{

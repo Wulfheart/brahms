@@ -11,10 +11,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	score.Read(p)
-	val, ok := score.Score["1"]
-	fmt.Println("Value:", val, ok)
-	for k, i := range score.Score {
-		fmt.Println(k, i.Name)
-	}
+	sc := score.Read(p)
+	val := *sc["1"].Plays[0]
+	fmt.Println("Value:", val)
 }
