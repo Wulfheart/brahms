@@ -1,8 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"path/filepath"
-	"wulfheart/brahms/score"
+	"wulfheart/brahms/score/midicsv"
 )
 
 func main() {
@@ -10,6 +11,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	score.Midi2csv(p)
+	st, err := midicsv.Process(p)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(st)
 
 }
