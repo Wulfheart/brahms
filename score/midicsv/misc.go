@@ -78,7 +78,7 @@ func (n note) fullNoteOctave() string {
 }
 
 func (n note) toString(tm tempoMap) string{
-	return fmt.Sprintf("%d,%f,%d,%f,%d,%s,%d,%d", n.tick, float64(n.onTimeMicros(tm)/1000000.0), n.duration, float64(n.durationMicros(tm)/1000000.0), n.pitch, n.fullNoteOctave(), n.velocity, n.track)
+	return fmt.Sprintf("%d,%d,%d,%d,%d,%s,%d,%d", n.tick, n.onTimeMicros(tm), n.duration, n.durationMicros(tm), n.pitch, n.fullNoteOctave(), n.velocity, n.track)
 }
 
 type tempoEvent struct {
@@ -240,7 +240,6 @@ func convertMidi2Csv(path string)([][]string, error){
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(read[0])
 
 	// 	Filter
 	for o, m := range read {
