@@ -1,5 +1,7 @@
 github.com/Wulfheart/go-color-mix v0.0.0-20200618153902-58666d5b1de5 h1:+Xl5BqhlYJxT6CdyKFKij+Gus/pl/YzEtiEd5n+J45k=
 github.com/Wulfheart/go-color-mix v0.0.0-20200618153902-58666d5b1de5/go.mod h1:FPjCFK1gI482+o3PJEm8Rtx6cvYdzeqo0cHmhBAPhh8=
+github.com/ajstarks/svgo v0.0.0-20200320125537-f189e35d30ca h1:kWzLcty5V2rzOqJM7Tp/MfSX0RMSI1x4IOLApEefYxA=
+github.com/ajstarks/svgo v0.0.0-20200320125537-f189e35d30ca/go.mod h1:K08gAheRH3/J6wwsYMMT4xOr94bZjxIelGM0+d/wbFw=
 github.com/go-audio/midi v1.0.0 h1:50zbE5RwJxfwYdOYMqIhdhcTnfqmGPuKm5j5g6ethik=
 github.com/go-audio/midi v1.0.0/go.mod h1:PoFcd6KPFUn++NHd1libpb/WifNIb/qKVvZ71McMVmo=
 github.com/lucasb-eyer/go-colorful v1.0.3 h1:QIbQXiugsb+q10B+MI+7DI1oQLdmnep86tWFlaaUAac=

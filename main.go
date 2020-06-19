@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/lucasb-eyer/go-colorful"
 	"path/filepath"
 	"wulfheart/brahms/score"
 )
@@ -15,6 +16,12 @@ func main() {
 	for _, v := range sc {
 		v.Sort()
 	}
-	fmt.Println(sc.TotalTicks())
-	fmt.Println("Sorting done")
+	// viz.Test()
+	colors, err := colorful.HappyPalette(11)
+	if err != nil {
+		panic(err)
+	}
+	for _, c := range colors {
+		fmt.Println(c.Hex())
+	}
 }
