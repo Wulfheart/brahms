@@ -19,13 +19,13 @@ func (s *Score) SortedKeys() []string{
     })
 	return keys
 }
-func (s *Score) TotalTicks() int {
-	maxTicks := 0
+func (s *Score) TotalTicks() float64 {
+	maxTicks := 0.0
 	for _, p := range *s {
 		// Part Layer
-		maxTicksPart := 0
+		maxTicksPart := 0.0
 		for _, n := range p.Plays {
-			end := int(n.StartTicks + n.DurTicks)
+			end := n.StartTicks + n.DurTicks
 			if end > maxTicksPart {
 				maxTicksPart = end
 			}
@@ -36,13 +36,13 @@ func (s *Score) TotalTicks() int {
 	}
 	return maxTicks
 }
-func (s *Score) MaxDuration() int {
-	maxDurTicks := 0
+func (s *Score) MaxDuration() float64 {
+	maxDurTicks := 0.0
 	for _, p := range *s {
 		// Part Layer
-		maxDurationPart := 0
+		maxDurationPart := 0.0
 		for _, n := range p.Plays {
-			end := int(n.DurTicks)
+			end := n.DurTicks
 			if end > maxDurationPart {
 				maxDurationPart = end
 			}
@@ -53,13 +53,13 @@ func (s *Score) MaxDuration() int {
 	}
 	return maxDurTicks
 }
-func (s *Score) MaxPitch() int {
-	maxPitch := 0
+func (s *Score) MaxPitch() float64 {
+	maxPitch := 0.0
 	for _, p := range *s {
 		// Part Layer
-		maxPitchPart := 0
+		maxPitchPart := 0.0
 		for _, n := range p.Plays {
-			end := int(n.Pitch)
+			end := n.Pitch
 			if end > maxPitchPart {
 				maxPitchPart = end
 			}
@@ -71,13 +71,13 @@ func (s *Score) MaxPitch() int {
 	return maxPitch
 }
 
-func (s *Score) MinPitch() int {
-	minPitch := 0
+func (s *Score) MinPitch() float64 {
+	minPitch := 0.0
 	for _, p := range *s {
 		// Part Layer
-		minPitchPart := 0
+		minPitchPart := 0.0
 		for _, n := range p.Plays {
-			end := int(n.Pitch)
+			end := n.Pitch
 			if end < minPitchPart {
 				minPitchPart = end
 			}

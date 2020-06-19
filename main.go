@@ -5,6 +5,7 @@ import (
 	"github.com/lucasb-eyer/go-colorful"
 	"path/filepath"
 	"wulfheart/brahms/score"
+	"wulfheart/brahms/viz"
 )
 
 func main() {
@@ -16,8 +17,7 @@ func main() {
 	for _, v := range sc {
 		v.Sort()
 	}
-	// viz.Test()
-	fmt.Println(sc.SortedKeys())
+	viz.Test(sc)
 	colors, err := colorful.HappyPalette(11)
 	if err != nil {
 		panic(err)
