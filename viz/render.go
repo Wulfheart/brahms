@@ -9,17 +9,18 @@ import (
 	"wulfheart/brahms/score"
 )
 
-func Render (w io.Writer, scr score.Score) *svg.SVG{
+func RenderCircle(w io.Writer, scr score.Score) *svg.SVG {
 	// Score
 	maxPitch := scr.MaxPitch()
 	minPitch := scr.MinPitch()
 	maxDuration := scr.MaxDuration()
+	// avgDuration := scr.AvgDuration()
 	totalTicks := scr.TotalTicks()
 
 	// Graphic
 	maxR := 350.0
-	minR := 20.0
-	maxRNode := 15.0
+	minR := 0.0
+	maxRNode := 30.0
 
 	wd := 800
 	h := 800
@@ -32,14 +33,26 @@ func Render (w io.Writer, scr score.Score) *svg.SVG{
 	for i, k := range scr.SortedKeys() {
 		p := scr[k]
 		color := colors[i]
-		for _, n := range p.Plays{
-		r := ((n.Pitch)/(maxPitch-minPitch))*(maxR-minR) + minR
-		// TODO: Plus or minus (mathematically positive?)
-		angle := (n.StartTicks/totalTicks) * 2 * math.Pi
-		nodeR := (n.DurTicks / maxDuration) * maxRNode
-		x,y := cartesian(r, angle)
-		style := fmt.Sprintf("stroke: %s; fill: %s; fill-opacity: 0.5", color.Hex(), color.Hex())
-		s.Circle(wd/2 + int(x), h/2 + int(y), int(nodeR), style)
+		for _, n := range p.Plays {
+			r := ((n.Pitch)/(maxPitch-minPitch))*(maxR-minR) + minR
+			if r == 0 {
+				// panic(fmt.Sprintf("%f,%f,%f,%f,%f", n.Pitch, maxPitch, minPitch, maxR, minR))
+			}
+			// TODO: Plus or minus (mathematically positive?)
+			angle := (n.StartTicks / totalTicks) * 2 * math.Pi
+			if angle > 2*math.Pi {
+				panic(angle)
+			}
+
+			// nodeR := 4.3 * math.Exp((n.DurTicks / avgDuration) * 0.025)
+			nodeR := (n.DurTicks / maxDuration) * maxRNode
+			if nodeR == 0 {
+				fmt.Printf("%v", n)
+				panic(fmt.Sprintf("%f,%f", n.DurTicks, maxDuration))
+			}
+			x, y := cartesian(r, angle)
+			style := fmt.Sprintf("stroke: %s; fill: %s; fill-opacity: 0.5", color.Hex(), color.Hex())
+			s.Circle(wd/2+int(x), h/2+int(y), int(nodeR), style)
 		}
 
 	}
@@ -47,11 +60,10 @@ func Render (w io.Writer, scr score.Score) *svg.SVG{
 	return s
 }
 
-func makePalette(c1 colorful.Color, c2 colorful.Color, steps int) []colorful.Color{
+func makePalette(c1 colorful.Color, c2 colorful.Color, steps int) []colorful.Color {
 	var colors []colorful.Color
-	for i := 0; i < steps; i++{
+	for i := 0; i < steps; i++ {
 		colors = append(colors, c1.BlendHcl(c2, float64(i)/float64(steps-1)))
 	}
 	return colors
 }
-

@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func ParseMidi(path string) Score{
+func ParseMidi(path string) Score {
 	f, err := os.OpenFile(path, os.O_RDWR, os.ModeAppend)
 	if err != nil {
 		panic(err)
@@ -19,7 +19,7 @@ func ParseMidi(path string) Score{
 
 	t := make([]*midi.Event, 0)
 	fmt.Println(len(decoder.Tracks[1].Events))
-	for _, m := range decoder.Tracks[1].Events{
+	for _, m := range decoder.Tracks[1].Events {
 		// if m.Cmd == midi.EventByteMap["NoteOn"] || m.Cmd == midi.EventByteMap["NoteOff"] {
 		// 	t = append(t, m)
 		// }
@@ -31,7 +31,6 @@ func ParseMidi(path string) Score{
 	if err != nil {
 		panic(err)
 	}
-
 
 	return nil
 }

@@ -1,25 +1,19 @@
 package viz
 
 import (
-	"fmt"
-	"log"
-	"net/http"
+	"bytes"
+	svg "github.com/ajstarks/svgo"
 	"wulfheart/brahms/score"
 )
 
 var s score.Score
 
-func Test(score score.Score) {
-	s = score
-	http.Handle("/", http.HandlerFunc(circle))
-	fmt.Println("Starting Webserver")
-	err := http.ListenAndServe(":2003", nil)
-	if err != nil {
-		log.Fatal("ListenAndServe:", err)
-	}
+func CreateCircular(score score.Score, buffer *bytes.Buffer) (s *svg.SVG) {
+	// var buf *bytes.Buffer
+	s = RenderCircle(buffer, score)
+	return s
 }
 
-func circle(w http.ResponseWriter, req *http.Request) {
-	w.Header().Set("Content-Type", "image/svg+xml")
-	Render(w, s)
+func CreateArcs(score score.Score, buffer *bytes.Buffer) (s *svg.SVG) {
+	return RenderArc(buffer, score)
 }

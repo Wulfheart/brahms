@@ -3,18 +3,36 @@ package score
 import (
 	"encoding/csv"
 	"fmt"
+	"io/ioutil"
 	"strconv"
 	"strings"
 	"wulfheart/brahms/score/midicsv"
 )
 
+const (
+	ReadProcessedCsv = iota
+	ReadMidi
+)
 
-func Read(path string) Score {
+func Read(path string, opt int) Score {
 
-	csvfile, err := midicsv.Process(path)
-	if err != nil {
-		panic(err)
+	var csvfile string
+	if opt == ReadMidi {
+		o, err := midicsv.Process(path)
+		if err != nil {
+			panic(err)
+		}
+		csvfile = o
+	} else if opt == ReadProcessedCsv {
+		f, err := ioutil.ReadFile(path)
+		if err != nil {
+			panic(err)
+		}
+		csvfile = string(f)
+	} else {
+		panic("No valid option.")
 	}
+	csvfile = strings.ReplaceAll(csvfile, "\x00", "")
 
 	// This is some weird behaviour probably caused by one of the previous tools. Let's remove this, so it doesn't get weird and easily testable.
 	r := csv.NewReader(strings.NewReader(csvfile))
@@ -50,9 +68,9 @@ func Read(path string) Score {
 		n := Note{
 			Part:           part,
 			StartTicks:     parseToFloat(l[0]),
-			StartSecs:      parseToFloat(l[1])/1000000.0,
+			StartSecs:      parseToFloat(l[1]) / 1000000.0,
 			DurTicks:       parseToFloat(l[2]),
-			DurSecs:        parseToFloat(l[3])/1000000.0,
+			DurSecs:        parseToFloat(l[3]) / 1000000.0,
 			Pitch:          parseToFloat(l[4]),
 			FullNoteOctave: l[5],
 			Velocity:       parseToFloat(l[6]),

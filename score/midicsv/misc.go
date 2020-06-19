@@ -62,11 +62,11 @@ func (n note) octave() int {
 }
 
 func (n note) letter() string {
-	return noteLetters[n.pitch % 12]
+	return noteLetters[n.pitch%12]
 }
 
 func (n note) sharp() string {
-	return sharps[n.pitch % 12]
+	return sharps[n.pitch%12]
 }
 
 func (n note) fullNote() string {
@@ -77,7 +77,7 @@ func (n note) fullNoteOctave() string {
 	return fmt.Sprintf("%s%d%s", n.letter(), n.octave(), n.sharp())
 }
 
-func (n note) toString(tm tempoMap) string{
+func (n note) toString(tm tempoMap) string {
 	return fmt.Sprintf("%d,%d,%d,%d,%d,%s,%d,%d", n.tick, n.onTimeMicros(tm), n.duration, n.durationMicros(tm), n.pitch, n.fullNoteOctave(), n.velocity, n.track)
 }
 
@@ -103,7 +103,7 @@ type tempoMap struct {
 	tmap []tempoEvent
 }
 
-func initTempoMap(tpqn int, tmap []tempoEvent) *tempoMap{
+func initTempoMap(tpqn int, tmap []tempoEvent) *tempoMap {
 	if tpqn == 0 {
 		tpqn = 480
 	}
@@ -134,7 +134,7 @@ func (t tempoMap) microsAtTick(tick int) int {
 	return te.micros + ((tick - te.tick) * te.tempo / t.tpqn)
 }
 
-func Process(path string) (string, error){
+func Process(path string) (string, error) {
 	tempoMap := initTempoMap(0, nil)
 	notes := make([]note, 0)
 	noteEvents := make([]noteEvent, 0)
@@ -223,7 +223,7 @@ func Process(path string) (string, error){
 	return b.String(), nil
 }
 
-func convertMidi2Csv(path string)([][]string, error){
+func convertMidi2Csv(path string) ([][]string, error) {
 	cmd := exec.Command("midicsv", path)
 	var out bytes.Buffer
 	cmd.Stdout = &out
@@ -250,5 +250,3 @@ func convertMidi2Csv(path string)([][]string, error){
 	return read, nil
 
 }
-
-

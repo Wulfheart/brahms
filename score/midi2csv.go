@@ -11,8 +11,6 @@ import (
 	"strings"
 )
 
-
-
 // Requires midicsv installed
 func Midi2csv(p string) {
 	cmd := exec.Command("midicsv", p)
@@ -53,18 +51,18 @@ func Midi2csv(p string) {
 
 	// 	Process data
 	type tempo struct {
-	track  string
-	tick   int
-	number int
-}
+		track  string
+		tick   int
+		number int
+	}
 
-var tempi []tempo
+	var tempi []tempo
 
-// var header struct {
-// 	format   int
-// 	division int
-// 	nTracks  int
-// }
+	// var header struct {
+	// 	format   int
+	// 	division int
+	// 	nTracks  int
+	// }
 	for _, row := range read {
 		switch row[2] {
 		case "Header":
