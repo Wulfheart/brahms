@@ -13,8 +13,8 @@ func main() {
 	fmt.Println("Compiling finished")
 	// p, err := filepath.Abs("./midi2csv/Beethoven_9.mid")
 	// p, err := filepath.Abs("./midi2csv/bcs.mid")
-	p, err := filepath.Abs("./midi2csv/bach_brandenburg_3.mid")
-	// p, err := filepath.Abs("./midi2csv/passacaglia.mid")
+	// p, err := filepath.Abs("./midi2csv/bach_brandenburg_3.mid")
+	p, err := filepath.Abs("./midi2csv/mars.mid")
 	if err != nil {
 		panic(err)
 	}

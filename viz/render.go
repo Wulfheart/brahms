@@ -25,8 +25,8 @@ func RenderCircle(w io.Writer, scr score.Score) *svg.SVG {
 	wd := 800
 	h := 800
 
-	c1, _ := colorful.Hex("#3CA55C")
-	c2, _ := colorful.Hex("#B5AC49")
+	c1, _ := colorful.Hex("#190A05")
+	c2, _ := colorful.Hex("#870000")
 	colors := makePalette(c1, c2, len(scr))
 	s := svg.New(w)
 	s.Start(wd, h)
@@ -44,7 +44,7 @@ func RenderCircle(w io.Writer, scr score.Score) *svg.SVG {
 				panic(angle)
 			}
 			// nodeR := math.Ceil((n.DurTicks / maxDuration) * maxRNode)
-			nodeR := (n.DurTicks/avgDuration) * 1/4 * maxRNode
+			nodeR := (n.DurTicks/avgDuration) * 1/5 * maxRNode
 			if nodeR > maxRNode {
 				nodeR = maxRNode
 			}
@@ -61,7 +61,7 @@ func RenderCircle(w io.Writer, scr score.Score) *svg.SVG {
 func makePalette(c1 colorful.Color, c2 colorful.Color, steps int) []colorful.Color {
 	var colors []colorful.Color
 	for i := 0; i < steps; i++ {
-		colors = append(colors, c1.BlendHcl(c2, float64(i)/float64(steps-1)))
+		colors = append(colors, c1.BlendRgb(c2, float64(i)/float64(steps-1)))
 	}
 	return colors
 }

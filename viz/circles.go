@@ -14,6 +14,3 @@ func CreateCircular(score score.Score, buffer *bytes.Buffer) (s *svg.SVG) {
 	return s
 }
 
-func CreateArcs(score score.Score, buffer *bytes.Buffer) (s *svg.SVG) {
-	return RenderArc(buffer, score)
-}
