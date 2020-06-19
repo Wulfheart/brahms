@@ -1,7 +1,24 @@
 package score
 
+import (
+	"sort"
+	"strconv"
+)
+
 type Score map[string]*Part
 
+func (s *Score) SortedKeys() []string{
+	keys := make([]string, 0)
+	for k, _ := range *s {
+		keys = append(keys, k)
+	}
+	sort.Slice(keys, func(i, j int) bool {
+        numA, _ := strconv.Atoi(keys[i])
+        numB, _ := strconv.Atoi(keys[j])
+        return numA < numB
+    })
+	return keys
+}
 func (s *Score) TotalTicks() int {
 	maxTicks := 0
 	for _, p := range *s {

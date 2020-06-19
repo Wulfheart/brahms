@@ -17,6 +17,7 @@ func main() {
 		v.Sort()
 	}
 	// viz.Test()
+	fmt.Println(sc.SortedKeys())
 	colors, err := colorful.HappyPalette(11)
 	if err != nil {
 		panic(err)
