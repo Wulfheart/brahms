@@ -13,14 +13,14 @@ func RenderCircle(w io.Writer, scr score.Score) *svg.SVG {
 	// Score
 	maxPitch := scr.MaxPitch()
 	minPitch := scr.MinPitch()
-	maxDuration := scr.MaxDuration()
-	// avgDuration := scr.AvgDuration()
+	// maxDuration := scr.MaxDuration()
+	avgDuration := scr.AvgDuration()
 	totalTicks := scr.TotalTicks()
 
 	// Graphic
 	maxR := 350.0
 	minR := 0.0
-	maxRNode := 30.0
+	maxRNode := 15.0
 
 	wd := 800
 	h := 800
@@ -43,15 +43,13 @@ func RenderCircle(w io.Writer, scr score.Score) *svg.SVG {
 			if angle > 2*math.Pi {
 				panic(angle)
 			}
-
-			// nodeR := 4.3 * math.Exp((n.DurTicks / avgDuration) * 0.025)
-			nodeR := (n.DurTicks / maxDuration) * maxRNode
-			if nodeR == 0 {
-				fmt.Printf("%v", n)
-				panic(fmt.Sprintf("%f,%f", n.DurTicks, maxDuration))
+			// nodeR := math.Ceil((n.DurTicks / maxDuration) * maxRNode)
+			nodeR := (n.DurTicks/avgDuration) * 1/4 * maxRNode
+			if nodeR > maxRNode {
+				nodeR = maxRNode
 			}
 			x, y := cartesian(r, angle)
-			style := fmt.Sprintf("stroke: %s; fill: %s; fill-opacity: 0.5", color.Hex(), color.Hex())
+			style := fmt.Sprintf("stroke: %s; fill: %s; fill-opacity: 0.3", "none", color.Hex())
 			s.Circle(wd/2+int(x), h/2+int(y), int(nodeR), style)
 		}
 
