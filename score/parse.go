@@ -3,10 +3,10 @@ package score
 import (
 	"encoding/csv"
 	"fmt"
+	"github.com/Wulfheart/brahms/score/midicsv"
 	"io/ioutil"
 	"strconv"
 	"strings"
-	"wulfheart/brahms/score/midicsv"
 )
 
 const (

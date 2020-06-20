@@ -1,4 +1,4 @@
-module wulfheart/brahms
+module github.com/Wulfheart/brahms
 
 go 1.14
 

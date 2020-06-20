@@ -2,11 +2,11 @@ package viz
 
 import (
 	"fmt"
+	"github.com/Wulfheart/brahms/score"
 	svg "github.com/ajstarks/svgo"
 	"github.com/lucasb-eyer/go-colorful"
 	"io"
 	"math"
-	"wulfheart/brahms/score"
 )
 
 type CircleConfig struct {

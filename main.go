@@ -4,13 +4,13 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"github.com/Wulfheart/brahms/score"
+	"github.com/Wulfheart/brahms/viz"
 	"github.com/mingrammer/cfmt"
 	"github.com/urfave/cli/v2"
 	"os"
 	"path/filepath"
 	"strings"
-	"wulfheart/brahms/score"
-	"wulfheart/brahms/viz"
 )
 
 func main() {
@@ -76,8 +76,8 @@ func main() {
 				Hidden: true,
 			},
 			&cli.Float64Flag{
-				Name:   "fill-opacity",
-				Value:  0.5,
+				Name:  "fill-opacity",
+				Value: 0.5,
 				// Hidden: true,
 			},
 		},
@@ -139,7 +139,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 
 }
 

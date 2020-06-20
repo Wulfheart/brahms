@@ -1,11 +1,11 @@
 package main
 
 import (
+	"github.com/Wulfheart/brahms/viz"
 	"image"
 	"image/draw"
 	"image/png"
 	"os"
-	"wulfheart/brahms/viz"
 )
 
 func main() {
