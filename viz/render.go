@@ -9,7 +9,17 @@ import (
 	"wulfheart/brahms/score"
 )
 
-func RenderCircle(w io.Writer, scr score.Score) *svg.SVG {
+type CircleConfig struct {
+	MaxR     float64
+	MinR     float64
+	MaxRNode float64
+	Width    float64
+	Height   float64
+	Colors []colorful.Color
+	Style    string
+}
+
+func RenderCircle(w io.Writer, scr score.Score, opt CircleConfig) *svg.SVG {
 	// Score
 	maxPitch := scr.MaxPitch()
 	minPitch := scr.MinPitch()
@@ -18,33 +28,30 @@ func RenderCircle(w io.Writer, scr score.Score) *svg.SVG {
 	totalTicks := scr.TotalTicks()
 
 	// Graphic
-	maxR := 350.0
-	minR := 0.0
-	maxRNode := 15.0
+	maxR := opt.MaxR
+	minR := opt.MinR
+	maxRNode := opt.MaxRNode
 
-	wd := 800
-	h := 800
+	wd := int(opt.Width)
+	h := int(opt.Height)
 
-	c1, _ := colorful.Hex("#ffff1c")
-	c2, _ := colorful.Hex("#00c3ff")
-	colors := makePalette(c1, c2, len(scr))
 	s := svg.New(w)
 	s.Start(wd, h)
 	for i, k := range scr.SortedKeys() {
 		p := scr[k]
-		color := colors[i]
+		color := opt.Colors[i]
 		for _, n := range p.Plays {
 			r := ((n.Pitch)/(maxPitch-minPitch))*(maxR-minR) + minR
 			if r == 0 {
 				// panic(fmt.Sprintf("%f,%f,%f,%f,%f", n.Pitch, maxPitch, minPitch, maxR, minR))
 			}
 			// TODO: Plus or minus (mathematically positive?)
-			angle := (n.StartTicks / totalTicks) * 2 * math.Pi - 0.5 * math.Pi
+			angle := (n.StartTicks/totalTicks)*2*math.Pi - 0.5*math.Pi
 			if angle > 2*math.Pi {
 				panic(angle)
 			}
 			// nodeR := math.Ceil((n.DurTicks / maxDuration) * maxRNode)
-			nodeR := (n.DurTicks/avgDuration) * 1/5 * maxRNode
+			nodeR := (n.DurTicks / avgDuration) * 1 / 5 * maxRNode
 			if nodeR > maxRNode {
 				nodeR = maxRNode
 			}
@@ -56,12 +63,4 @@ func RenderCircle(w io.Writer, scr score.Score) *svg.SVG {
 	}
 	s.End()
 	return s
-}
-
-func makePalette(c1 colorful.Color, c2 colorful.Color, steps int) []colorful.Color {
-	var colors []colorful.Color
-	for i := 0; i < steps; i++ {
-		colors = append(colors, c1.BlendRgb(c2, float64(i)/float64(steps-1)))
-	}
-	return colors
 }
