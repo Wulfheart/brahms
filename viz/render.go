@@ -25,8 +25,8 @@ func RenderCircle(w io.Writer, scr score.Score) *svg.SVG {
 	wd := 800
 	h := 800
 
-	c1, _ := colorful.Hex("#190A05")
-	c2, _ := colorful.Hex("#870000")
+	c1, _ := colorful.Hex("#ffff1c")
+	c2, _ := colorful.Hex("#00c3ff")
 	colors := makePalette(c1, c2, len(scr))
 	s := svg.New(w)
 	s.Start(wd, h)
@@ -39,7 +39,7 @@ func RenderCircle(w io.Writer, scr score.Score) *svg.SVG {
 				// panic(fmt.Sprintf("%f,%f,%f,%f,%f", n.Pitch, maxPitch, minPitch, maxR, minR))
 			}
 			// TODO: Plus or minus (mathematically positive?)
-			angle := (n.StartTicks / totalTicks) * 2 * math.Pi
+			angle := (n.StartTicks / totalTicks) * 2 * math.Pi - 0.5 * math.Pi
 			if angle > 2*math.Pi {
 				panic(angle)
 			}
@@ -49,7 +49,7 @@ func RenderCircle(w io.Writer, scr score.Score) *svg.SVG {
 				nodeR = maxRNode
 			}
 			x, y := cartesian(r, angle)
-			style := fmt.Sprintf("stroke: %s; fill: %s; fill-opacity: 0.3", "none", color.Hex())
+			style := fmt.Sprintf("stroke: %s; fill: %s; fill-opacity: 0.5", "none", color.Hex())
 			s.Circle(wd/2+int(x), h/2+int(y), int(nodeR), style)
 		}
 
