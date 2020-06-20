@@ -6,6 +6,8 @@ require (
 	github.com/ajstarks/svgo v0.0.0-20200320125537-f189e35d30ca
 	github.com/go-audio/midi v1.0.0
 	github.com/leaanthony/clir v1.0.4 // indirect
+	github.com/logrusorgru/aurora v0.0.0-20200102142835-e9ef32dff381 // indirect
 	github.com/lucasb-eyer/go-colorful v1.0.3
+	github.com/mingrammer/cfmt v1.1.0
 	github.com/urfave/cli/v2 v2.2.0
 )

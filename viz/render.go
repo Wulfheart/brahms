@@ -10,13 +10,15 @@ import (
 )
 
 type CircleConfig struct {
-	MaxR     float64
-	MinR     float64
-	MaxRNode float64
-	Width    float64
-	Height   float64
-	Colors []colorful.Color
-	Style    string
+	MaxR        float64
+	MinR        float64
+	MaxRNode    float64
+	Width       float64
+	Height      float64
+	FillOpacity float64
+	Colors      []colorful.Color
+	Filled      bool
+	Stroke      bool
 }
 
 func RenderCircle(w io.Writer, scr score.Score, opt CircleConfig) *svg.SVG {
@@ -39,7 +41,7 @@ func RenderCircle(w io.Writer, scr score.Score, opt CircleConfig) *svg.SVG {
 	s.Start(wd, h)
 	for i, k := range scr.SortedKeys() {
 		p := scr[k]
-		color := opt.Colors[i]
+
 		for _, n := range p.Plays {
 			r := ((n.Pitch)/(maxPitch-minPitch))*(maxR-minR) + minR
 			if r == 0 {
@@ -56,7 +58,15 @@ func RenderCircle(w io.Writer, scr score.Score, opt CircleConfig) *svg.SVG {
 				nodeR = maxRNode
 			}
 			x, y := cartesian(r, angle)
-			style := fmt.Sprintf("stroke: %s; fill: %s; fill-opacity: 0.5", "none", color.Hex())
+			stroke := "none"
+			if opt.Stroke {
+				stroke = "black"
+			}
+			fill := "none"
+			if opt.Filled {
+				fill = opt.Colors[i].Hex()
+			}
+			style := fmt.Sprintf("stroke: %s; fill: %s; fill-opacity: %s", stroke, fill, fmt.Sprintf("%f", opt.FillOpacity))
 			s.Circle(wd/2+int(x), h/2+int(y), int(nodeR), style)
 		}
 

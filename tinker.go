@@ -8,7 +8,7 @@ import (
 	"wulfheart/brahms/viz"
 )
 
-func main(){
+func main() {
 	// keypoints := []string{
 	// 	"#40E0D0", "#FF8C00", "#FF0080",
 	// }
@@ -36,8 +36,8 @@ func main(){
 		panic(err)
 	}
 
-	for y := 0; y < h -1; y++ {
-		draw.Draw(img, image.Rect(0, y, w, y + 1), &image.Uniform{C: palette[y]}, image.Point{},draw.Src)
+	for y := 0; y < h-1; y++ {
+		draw.Draw(img, image.Rect(0, y, w, y+1), &image.Uniform{C: palette[y]}, image.Point{}, draw.Src)
 	}
 
 	outpng, err := os.Create("gradientgen.png")

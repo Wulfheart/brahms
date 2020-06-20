@@ -229,7 +229,7 @@ func convertMidi2Csv(path string) ([][]string, error) {
 	cmd.Stdout = &out
 	err := cmd.Run()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("there was likely a problem with midicsv. do you have it installed? is your input file a midi file?🔍‍")
 	}
 	csvfile := out.String()
 	csvfile = strings.ReplaceAll(csvfile, "\x00", "")

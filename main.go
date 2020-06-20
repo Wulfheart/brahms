@@ -1,96 +1,156 @@
 package main
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
+	"github.com/mingrammer/cfmt"
 	"github.com/urfave/cli/v2"
-	"log"
 	"os"
+	"path/filepath"
+	"strings"
+	"wulfheart/brahms/score"
+	"wulfheart/brahms/viz"
 )
 
 func main() {
+	defer func() {
+		if err := recover(); err != nil {
+			cfmt.Errorln(err)
+			fmt.Println("")
+		}
+	}()
 
 	app := &cli.App{
 		Name:            "brahms",
 		Usage:           "visualize your music",
 		Version:         "v0.1.0",
 		HideHelpCommand: true,
-		// ArgsUsage: " ",
-		UsageText: "brahms -i path/to/midi [global options]",
+		UsageText:       "brahms -i path/to/midi [global options]",
+		OnUsageError: func(context *cli.Context, err error, isSubcommand bool) error {
+			cfmt.Errorln(err)
+			cfmt.Infoln("Here again the help text. I hope it helps.🧙‍\n")
+			cli.ShowAppHelp(context)
+			return nil
+		},
 		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name:    "input",
-				Aliases: []string{"i"},
-				Usage:   "`infile`",
+				Name:     "in",
+				Aliases:  []string{"i"},
+				Usage:    "`infile`",
+				Required: true,
 			},
 			&cli.StringFlag{
-				Name:    "output",
+				Name:    "out",
 				Aliases: []string{"o"},
 				Usage:   "`outfile` ",
 			},
 			&cli.StringFlag{
 				Name:    "colors",
 				Aliases: []string{"c"},
-				Usage:   "language for the greeting",
+				Usage:   "case-insensitive comma-separated string of `hex`colors, e.g. '#40e0d0,#ff8c00,#ff0080'",
 			},
-			&cli.IntFlag{
+			&cli.Float64Flag{
 				Name:   "width",
 				Value:  800,
 				Hidden: true,
 			},
-			&cli.IntFlag{
+			&cli.Float64Flag{
 				Name:   "height",
 				Value:  800,
 				Hidden: true,
 			},
-			&cli.IntFlag{
+			&cli.Float64Flag{
 				Name:   "max-r",
 				Value:  350,
 				Hidden: true,
 			},
-			&cli.IntFlag{
+			&cli.Float64Flag{
 				Name:   "min-r",
 				Value:  0,
 				Hidden: true,
 			},
-			&cli.IntFlag{
+			&cli.Float64Flag{
 				Name:   "max-r-node",
 				Value:  15,
 				Hidden: true,
 			},
+			&cli.Float64Flag{
+				Name:   "fill-opacity",
+				Value:  0.5,
+				// Hidden: true,
+			},
 		},
 		Action: func(c *cli.Context) error {
-			fmt.Println(c.Int("width"))
+
+			input, err := existingFilepath(c.String("in"))
+			if err != nil {
+				return err
+			}
+			sc := score.Read(input, score.ReadMidi)
+			buf := new(bytes.Buffer)
+			// TODO: Make error handling for wrong formatted strings
+			if strings.Contains(c.String("colors"), " ") {
+				return fmt.Errorf("don't use a space in your hexcolor string")
+			}
+			colors, err := viz.MakePalette(len(sc), strings.Split(c.String("colors"), ",")...)
+			colorsEmpty := c.String("colors") == ""
+			viz.RenderCircle(buf, sc, viz.CircleConfig{
+				MaxR:        c.Float64("max-r"),
+				MinR:        c.Float64("min-r"),
+				MaxRNode:    c.Float64("max-r-node"),
+				Width:       c.Float64("width"),
+				Height:      c.Float64("height"),
+				FillOpacity: c.Float64("fill-opacity"),
+				Colors:      colors,
+				Filled:      !colorsEmpty,
+				Stroke:      colorsEmpty,
+			})
+
+			// No output defined
+			if c.String("out") == "" {
+				f := bufio.NewWriter(os.Stdout)
+				defer f.Flush()
+				_, err = f.Write(buf.Bytes())
+				if err != nil {
+					return err
+				}
+			} else {
+				out, err := existingFilepath(c.String("out"))
+				if err != nil {
+					return err
+				}
+				f, err := os.Create(out)
+				if err != nil {
+					return err
+				}
+				_, err = f.Write(buf.Bytes())
+				if err != nil {
+					return err
+				}
+				cfmt.Successf("Midi rendered as svg at %s\n", out)
+			}
+
 			return nil
 		},
 	}
 
 	err := app.Run(os.Args)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
-	// fmt.Println("Compiling finished")
-	// // p, err := filepath.Abs("./midi2csv/Beethoven_9.mid")
-	// // p, err := filepath.Abs("./midi2csv/bcs.mid")
-	// // p, err := filepath.Abs("./midi2csv/bach_brandenburg_3.mid")
-	// p, err := filepath.Abs("./midi2csv/messiah.mid")
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// sc := score.Read(p, score.ReadMidi)
-	// fmt.Println(sc.AvgDuration(), sc.MaxDuration(), sc.MinDuration())
-	// buf := new(bytes.Buffer)
-	// viz.CreateCircular(sc, buf)
-	// p, err = filepath.Abs("./midi2csv/out.svg")
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// f, err := os.Create(p)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// _, err = f.Write(buf.Bytes())
-	// if err != nil {
-	// 	panic(err)
-	// }
 
+
+}
+
+func existingFilepath(p string) (path string, err error) {
+	path, err = filepath.Abs(p)
+	if err != nil {
+		return "", err
+	}
+	// File does not exist
+	if _, err := os.Stat(path); err != nil {
+		return "", fmt.Errorf("it seems like there was an issue with the file %s:\n%s", path, err)
+	}
+	return path, nil
 }

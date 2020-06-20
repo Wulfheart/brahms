@@ -15,7 +15,6 @@ const (
 )
 
 func Read(path string, opt int) Score {
-
 	var csvfile string
 	if opt == ReadMidi {
 		o, err := midicsv.Process(path)
@@ -83,8 +82,6 @@ func Read(path string, opt int) Score {
 }
 
 func parseToFloat(s string) float64 {
-	// Why is this needed? I have no idea
-	// s = strings.ReplaceAll(s, "\x00", "")
 	v, err := strconv.ParseFloat(s, 64)
 	if err != nil {
 		panic(err)
