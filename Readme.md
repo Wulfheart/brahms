@@ -64,4 +64,8 @@ GLOBAL OPTIONS:
    --version, -v              print the version (default: false)
 ````
 
+## Tips
+
+For nice gradients look at https://uigradients.com/ or at https://webgradients.com/.
+
 
