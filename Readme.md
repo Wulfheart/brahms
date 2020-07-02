@@ -37,6 +37,7 @@ Version 1.1 (January 2008)
 ```
 go install github.com/Wulfheart/brahms
 ```
+Note: The go install command seems to be broken. Please use the option below.
 
 ### Windows
 
