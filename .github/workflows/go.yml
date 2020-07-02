@@ -1,7 +1,6 @@
 name: goreleaser
 
-on:
-  release:
+on: release
 
 jobs:
   goreleaser:
