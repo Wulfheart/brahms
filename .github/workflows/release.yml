@@ -1,4 +1,4 @@
-on: release
+on: releaser
 name: Build Release
 jobs:
   release-linux-386:
