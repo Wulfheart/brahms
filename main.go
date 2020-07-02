@@ -24,7 +24,7 @@ func main() {
 	app := &cli.App{
 		Name:            "brahms",
 		Usage:           "visualize your music",
-		Version:         "v0.1.0",
+		Version:         "v0.1.1",
 		HideHelpCommand: true,
 		UsageText:       "brahms -i path/to/midi [global options]",
 		OnUsageError: func(context *cli.Context, err error, isSubcommand bool) error {
@@ -83,7 +83,7 @@ func main() {
 		},
 		Action: func(c *cli.Context) error {
 
-			input, err := existingFilepath(c.String("in"))
+			input, err := existingFilepath(c.String("in"), false)
 			if err != nil {
 				return err
 			}
@@ -116,7 +116,7 @@ func main() {
 					return err
 				}
 			} else {
-				out, err := existingFilepath(c.String("out"))
+				out, err := existingFilepath(c.String("out"), true)
 				if err != nil {
 					return err
 				}
@@ -142,14 +142,22 @@ func main() {
 
 }
 
-func existingFilepath(p string) (path string, err error) {
+func existingFilepath(p string, createIfNotExists bool) (path string, err error) {
 	path, err = filepath.Abs(p)
 	if err != nil {
 		return "", err
 	}
 	// File does not exist
 	if _, err := os.Stat(path); err != nil {
+		if os.IsNotExist(err) && createIfNotExists{
+			_, e := os.Create(path)
+			if e != nil {
+				return "", e
+			}
+		} else {
+
 		return "", fmt.Errorf("it seems like there was an issue with the file %s:\n%s", path, err)
+		}
 	}
 	return path, nil
 }
