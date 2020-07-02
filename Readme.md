@@ -32,7 +32,7 @@ Usage: Your\Path\Where\It\Is\Midicsv.exe [ options ] [ midi_file ] [ csv_file ]
 Version 1.1 (January 2008)
 ```
 
-### with go tools
+### with go tools (works on all OS)
 
 ```
 go install github.com/Wulfheart/brahms
