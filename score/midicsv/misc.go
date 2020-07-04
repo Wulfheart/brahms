@@ -134,14 +134,14 @@ func (t tempoMap) microsAtTick(tick int) int {
 	return te.micros + ((tick - te.tick) * te.tempo / t.tpqn)
 }
 
-func Process(path string) (string, error) {
+func Process(path string, midicsv_location string) (string, error) {
 	tempoMap := initTempoMap(0, nil)
 	notes := make([]note, 0)
 	noteEvents := make([]noteEvent, 0)
 	onTicks := make([]int, 0)
 
 	// Reading csv
-	conv, err := convertMidi2Csv(path)
+	conv, err := convertMidi2Csv(path, midicsv_location)
 	if err != nil {
 		return "", err
 	}
@@ -223,8 +223,8 @@ func Process(path string) (string, error) {
 	return b.String(), nil
 }
 
-func convertMidi2Csv(path string) ([][]string, error) {
-	cmd := exec.Command("midicsv", path)
+func convertMidi2Csv(path string, midicsv_location string) ([][]string, error) {
+	cmd := exec.Command(midicsv_location, path)
 	var out bytes.Buffer
 	cmd.Stdout = &out
 	err := cmd.Run()

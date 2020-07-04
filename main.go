@@ -24,7 +24,7 @@ func main() {
 	app := &cli.App{
 		Name:            "brahms",
 		Usage:           "visualize your music",
-		Version:         "v0.1.1",
+		Version:         "v0.2.1",
 		HideHelpCommand: true,
 		UsageText:       "brahms -i path/to/midi [global options]",
 		OnUsageError: func(context *cli.Context, err error, isSubcommand bool) error {
@@ -80,6 +80,12 @@ func main() {
 				Value: 0.5,
 				// Hidden: true,
 			},
+			&cli.StringFlag{
+				Name:  "midi2csv",
+				Value: "midicsv",
+				Usage: "Provide a custom location for your midicsv command",
+				// Hidden: true,
+			},
 		},
 		Action: func(c *cli.Context) error {
 
@@ -87,7 +93,7 @@ func main() {
 			if err != nil {
 				return err
 			}
-			sc := score.Read(input, score.ReadMidi)
+			sc := score.Read(input, score.ReadMidi, c.String("midi2csv"))
 			buf := new(bytes.Buffer)
 			// TODO: Make error handling for wrong formatted strings
 			if strings.Contains(c.String("colors"), " ") {
