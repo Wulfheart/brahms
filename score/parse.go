@@ -14,10 +14,10 @@ const (
 	ReadMidi
 )
 
-func Read(path string, opt int) Score {
+func Read(path string, opt int, midicsv_location string) Score {
 	var csvfile string
 	if opt == ReadMidi {
-		o, err := midicsv.Process(path)
+		o, err := midicsv.Process(path, midicsv_location)
 		if err != nil {
 			panic(err)
 		}
