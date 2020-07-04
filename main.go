@@ -24,7 +24,7 @@ func main() {
 	app := &cli.App{
 		Name:            "brahms",
 		Usage:           "visualize your music",
-		Version:         "v0.1.1",
+		Version:         "v0.2.1",
 		HideHelpCommand: true,
 		UsageText:       "brahms -i path/to/midi [global options]",
 		OnUsageError: func(context *cli.Context, err error, isSubcommand bool) error {
